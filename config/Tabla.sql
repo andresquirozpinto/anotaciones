@@ -1,0 +1,1 @@
+CREATE TABLE `anotaciones`.`alumnos` (`id` INT(5) NOT NULL AUTO_INCREMENT , `nombre_alumno` VARCHAR(50) NOT NULL , `anotacion_alumno` VARCHAR(255) NOT NULL , `curso_alumno` VARCHAR(50) NOT NULL , `fecha_anotacion` VARCHAR(50) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB; 

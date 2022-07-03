@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+    <main>
+        <div class="container" style="background-color: rgba(76, 26, 122, 0.678);">
+            <div class="row">
+                <div class="col-4">
+                    <div class="col-12">
+                        <div class="card" style="width: 18rem; background-color: rgb(75, 27, 119);">
+                            <img src="img/icono2.png" class="card-img-top" alt="..." width="50px" height="270px">
+                            <div class="card-body text-center">
+
+                                <a href="perfil.html" style="color: aliceblue; text-decoration: none;">Perfil</a>
+                                <br>
+                                <a href="index.html" style="color: aliceblue; text-decoration: none;">Cerrar Sesión</a>
+                                <label for="" style="color: #f0f8ff;" class="mb-3"><b>_________________________________</b></label>
+                                <div id="">
+                                    <h3 class="color-letra" style="background-color: rgb(43, 17, 66);color: aliceblue; text-decoration: none;">
+                                        Calificaciones</h3>
+                                </div>
+                                <a href="formulario.html" style="color: aliceblue; text-decoration: none;">Modificar Notas</a>
+                                <br>
+                                <a href="formulario-notas.html" style="color: aliceblue; text-decoration: none;">Informe Notas</a>
+                                <br>
+                                <a href="informe-final.html" style="color: aliceblue; text-decoration: none;">Informe Final</a>
+
+                                <div id="">
+                                    <h3 style="background-color: rgb(43, 17, 66);color: aliceblue; text-decoration: none;">Alumnos</h3>
+                                </div>
+                                <a href="anotaciones.html" style="color: aliceblue; text-decoration: none;">Anotaciones</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-12">
+                            <nav class="navbar navbar-expand-lg navbar-light"
+                                style="background-color: rgb(75, 27, 119);">
+                                <div class="container-fluid">
+                                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                        aria-expanded="false" aria-label="Toggle navigation">
+                                        <span class="navbar-toggler-icon"></span>
+                                    </button>
+                                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                            <li class="nav-item">
+                                                <a class="nav-link active h3" href="#"
+                                                    style="background-color: rgb(43, 17, 66);color: aliceblue;">Calificaciones</a>
+                                            </li>
+                                    </div>
+                                </div>
+                            </nav>
+
+                        </div>
+                        <div class="col-12">
+                            <div class="form" id="margen-formulario" >
+                                <div class="form-group" >
+                                    <div class="row">
+                                        <div class="text-center mt-2">
+                                            <h3>Consulta de Calificaciones</h3>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="" class="mt-2" ><b>Nombre:</b></label>
+                                            <input class="form-control mt-2 mb-2" type="text"
+                                                placeholder="Andrés Quiroz">
+
+                                            <label for=""><b>Profesor Jefe:</b></label>
+                                            <input class="form-control mt-2 mb-2" type="text"
+                                                placeholder="Javier Miles">
+                                        </div>
+                                        <div class="col-6">
+                                            <label for=""><b>Rut Alumno:</b></label>
+                                            <input class="form-control mt-2 mb-2" type="text" placeholder="20136241-5">
+                                        </div>
+                                        <div class="col-6">
+                                            <label for=""><b>Curso Alumno:</b></label>
+                                            <input class="form-control mt-2 mb-2" type="text"
+                                                placeholder="Segundo medio A">
+                                        </div>
+                                    </div>
+                                    <label for=""><b>Parciales:</b></label>
+                                    <select class="form-control mt-2 mb-2" name="select">
+                                        <option value="value1" selected>Seleccione...</option>
+                                        <option value="value2">Parcial primer semestre</option>
+                                        <option value="value2">Parcial segundo semestre</option>
+                                    </select>
+                                    <!-- dflex es para acustar el contenido dentro del div al centro, este en espeficico-->
+                                    <div class="d-flex justify-content-center">
+                                        <a href="formulario-resultado-consulta.html"
+                                            class="btn btn-danger mt-3 rounded-pill">Consultar alumno</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex justify-content-center  "
+                                style="background-color: rgb(75, 27, 119);">
+                                <div class="mt-3"> <br></div>
+                                <a href="perfil.html" class="color-letra mt-2">Volver</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
