@@ -4,19 +4,19 @@ const cargarElementosPlantilla = () => {
   <form class="form-group" id="formulario-anotaciones">
   <div class="mb-3">
       <label for="titulo" class="form-label">Nombre del alumno</label>
-      <input type="text" class="form-control" id="nombre" maxlength="100" placeholder="Nombre Apellido" required>
+      <input type="text" class="form-control" id="nombre" minlength="1" maxlength="100" placeholder="Nombre Apellido" required>
   </div>
   <div class="mb-3">
       <label for="texto" class="form-label">Anotación</label>
-      <input type="text" class="form-control" id="anotacion" maxlength="300" placeholder="Hasta 300 caracteres" required>
+      <input type="text" class="form-control" id="anotacion" minlength="1" maxlength="300" placeholder="Hasta 300 caracteres" required>
   </div>
   <div class="mb-3">
       <label for="texto" class="form-label">Curso</label>
-      <input type="text" class="form-control" id="curso" maxlength="3" placeholder="Ejemplo: 3°A" required>
+      <input type="text" class="form-control" id="curso" minlength="1" maxlength="3" placeholder="Ejemplo: 3°A" required>
   </div>
   <div class="mb-3">
       <label for="texto" class="form-label">Fecha</label>
-      <input type="text" class="form-control" id="fecha" maxlength="10" placeholder="Fecha del día" required>
+      <input type="text" class="form-control" id="fecha" minlength="1" maxlength="10" placeholder="Fecha del día" required>
   </div>
   </form>
   `
