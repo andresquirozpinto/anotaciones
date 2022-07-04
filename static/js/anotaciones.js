@@ -16,7 +16,7 @@ const cargarElementosPlantilla = () => {
   </div>
   <div class="mb-3">
       <label for="texto" class="form-label">Fecha</label>
-      <input type="text" class="form-control" id="fecha" minlength="1" maxlength="10" placeholder="Ejemplo: 03/07/2022" required>
+      <input type="date" class="form-control" id="fecha" minlength="1" maxlength="10" placeholder="Ejemplo: 03/07/2022" required>
   </div>
   </form>
   `
@@ -47,6 +47,13 @@ const cargarElementosPlantilla = () => {
     <ul id="alumno-encontrado" class="list-group">
       
     </ul>
+
+    <div id="no-encontrado" class="col-12 text-center">
+      <div class="mt-3 fs-5 text-white">Sin datos para cargar</div>
+      <div class="spinner-border text-light" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
   `
   //llamar por ID los contenedores para dibujar el html dentro de cada uno(listaDatos, Formulario)
   const seccionDatos = document.getElementById('contenedor-datos')
@@ -63,6 +70,8 @@ const listarCargarDatos = async () => {
   //le damos formato JSON
   const anotacionesAlumnos = await respuesta.json()
   //console.log(anotacionesAlumnos)
+
+  let mensajeNoEncontrado = document.getElementById('no-encontrado')
 
   //dibujamos los datos del JSON en una etiqueta li
   const dibujarDatosListado = anotacionAlumno => `
@@ -103,14 +112,29 @@ const listarCargarDatos = async () => {
   const listaAnotacionAlumnoEncontrado = document.getElementById('alumno-encontrado')
   listaAnotacionAlumnoEncontrado.style.display = 'none'
 
+  mensajeNoEncontrado.style.display = 'none'
+
   anotacionesAlumnos.forEach(alumno => {
+
+    let btnLimpiarFormularioCerrarModal = document.getElementById('limpiar-formulario')
+    btnLimpiarFormularioCerrarModal.onclick = function limpiarFormulario() {
+      let formularioAnotacionAlumno = document.getElementById('formulario-anotaciones')
+      formularioAnotacionAlumno.reset()
+      document.getElementById('btnCrearAlumno').style.display = 'block'
+      document.getElementById('btnActualizarAlumno').style.display = 'none'
+    }
+
     let btnBuscadorPorNombre = document.getElementById('btnBuscador')
     let txtBuscadorPorNombre = document.getElementById('inputBuscador')
 
     btnBuscadorPorNombre.onclick = async function buscarPorNombre() {
       if (txtBuscadorPorNombre.value == "") {
         alert('Debe escribir un nombre antes de buscar')
-      }else {
+      } else {
+        if (txtBuscadorPorNombre.value != alumno.nombre_alumno) {
+          //alert('no se encontro nada')
+          mensajeNoEncontrado.style.display = 'block'
+        }
         const respuesta = await fetch('/api/alumnos/listarPorNombre/' + txtBuscadorPorNombre.value)
         const alumnoEncontrado = await respuesta.json()
         console.log(alumnoEncontrado)
@@ -151,6 +175,7 @@ const listarCargarDatos = async () => {
         btnListarTodos.onclick = async function listarTodos() {
           listaAnotacionAlumnoEncontrado.style.display = 'none'
           listaAnotacionAlumno.style.display = 'block'
+          mensajeNoEncontrado.style.display = 'none'
         }
       }
 
@@ -173,33 +198,23 @@ const listarCargarDatos = async () => {
     const updateNodoAlumno = document.querySelector(`[data-update-id="${alumno.id}"]`)
     updateNodoAlumno.onclick = async e => {
       let idAlumnoSeleccionado = alumno.id
-      console.log('IDSELECCIONADO: '+idAlumnoSeleccionado)
+      console.log('IDSELECCIONADO: ' + idAlumnoSeleccionado)
       document.getElementById('btnCrearAlumno').style.display = 'none'
-      document.getElementById('btnActualizarAlumno').style.display = ''
+      document.getElementById('btnActualizarAlumno').style.display = 'block'
 
       console.log('ID ALUMNO A ACTUALIZAR: ' + alumno.id + ' NOMBRE: ' + alumno.nombre_alumno)
 
-      const txtNombre = document.getElementById('nombre')
-      const txtAnotacion = document.getElementById('anotacion')
-      const txtCurso = document.getElementById('curso')
-      const txtFecha = document.getElementById('fecha')
+      let txtNombre = document.getElementById('nombre')
+      let txtAnotacion = document.getElementById('anotacion')
+      let txtCurso = document.getElementById('curso')
+      let txtFecha = document.getElementById('fecha')
       //cargar datos en el formulario dado el ID
       txtNombre.value = alumno.nombre_alumno
       txtCurso.value = alumno.curso_alumno
       txtAnotacion.value = alumno.anotacion_alumno
       txtFecha.value = alumno.fecha_anotacion
 
-      const formularioAnotacionAlumno = document.getElementById('formulario-anotaciones')
-
-      /*formularioAnotacionAlumno.onsubmit = async (e) => {
-        e.preventDefault()
-        const formularioData = new FormData(formularioAnotacionAlumno)
-        //obtener datos de formulario sin los ID de cada etiqueta HTML
-        const alumno = Object.fromEntries(formularioData.entries())
-        console.log(alumno)
-        
-        formularioAnotacionAlumno.reset()
-      }*/
+      let formularioAnotacionAlumno = document.getElementById('formulario-anotaciones')
 
       let btnActualizarAlumno = document.getElementById('btnActualizarAlumno')
 
@@ -211,7 +226,7 @@ const listarCargarDatos = async () => {
           anotacion_alumno: txtAnotacion.value,
           fecha_anotacion: txtFecha.value
         }
-        console.log('IDSELECCIONADOCARGADO: '+idAlumnoSeleccionado)
+        console.log('IDSELECCIONADOCARGADO: ' + idAlumnoSeleccionado)
         console.log(alumno)
 
         fetch(`/api/alumnos/actualizar/${idAlumnoSeleccionado}`, {
@@ -222,23 +237,22 @@ const listarCargarDatos = async () => {
           }
         })
         formularioAnotacionAlumno.reset()
-        
+        document.getElementById('btnCrearAlumno').style.display = 'block'
+        document.getElementById('btnActualizarAlumno').style.display = 'none'
+        listarCargarDatos()
       }
-
-
     }
-
   })
 }
 
 const agregarAlumno = () => {
-  const formularioAnotacionAlumno = document.getElementById('formulario-anotaciones')
+  let formularioAnotacionAlumno = document.getElementById('formulario-anotaciones')
   document.getElementById('btnActualizarAlumno').style.display = 'none'
-  document.getElementById('btnCrearAlumno').style.display = ''
-  const txtNombre = document.getElementById('nombre')
-  const txtAnotacion = document.getElementById('anotacion')
-  const txtCurso = document.getElementById('curso')
-  const txtFecha = document.getElementById('fecha')
+  document.getElementById('btnCrearAlumno').style.display = 'block'
+  let txtNombre = document.getElementById('nombre')
+  let txtAnotacion = document.getElementById('anotacion')
+  let txtCurso = document.getElementById('curso')
+  let txtFecha = document.getElementById('fecha')
   let btnGuardarAlumno = document.getElementById('btnCrearAlumno')
   btnGuardarAlumno.onclick = function guardarAlumno() {
     let alumno = {
@@ -272,7 +286,6 @@ const agregarAlumno = () => {
     listarCargarDatos()
   }
 }
-
 
 window.onload = () => {
   cargarElementosPlantilla()
