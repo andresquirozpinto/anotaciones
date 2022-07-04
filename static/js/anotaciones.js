@@ -4,40 +4,39 @@ const cargarElementosPlantilla = () => {
   <form class="form-group" id="formulario-anotaciones">
   <div class="mb-3">
       <label for="titulo" class="form-label">Nombre del alumno</label>
-      <input type="text" class="form-control" id="nombre" placeholder="Nombre Apellido Apellido">
+      <input type="text" class="form-control" id="nombre" maxlength="100" placeholder="Nombre Apellido" required>
   </div>
   <div class="mb-3">
       <label for="texto" class="form-label">Anotación</label>
-      <input type="text" class="form-control" id="anotacion" placeholder="Hasta 300 caracteres">
+      <input type="text" class="form-control" id="anotacion" maxlength="300" placeholder="Hasta 300 caracteres" required>
   </div>
   <div class="mb-3">
       <label for="texto" class="form-label">Curso</label>
-      <input type="text" class="form-control" id="curso" placeholder="Ejemplo: 3°A">
+      <input type="text" class="form-control" id="curso" maxlength="3" placeholder="Ejemplo: 3°A" required>
   </div>
   <div class="mb-3">
       <label for="texto" class="form-label">Fecha</label>
-      <input type="text" class="form-control" id="fecha" placeholder="Fecha del día">
+      <input type="text" class="form-control" id="fecha" maxlength="10" placeholder="Fecha del día" required>
   </div>
-  <button class="btn btn-primary" type="submit">Enviar</button>
   </form>
   `
   //crear html de listado, etiqueta ul
   const tablaDatos = `
   <div class="row mb-0 mx-0 mt-3 border border-4" style="background: white;">
     <div class="col d-flex text-center">
-        <div class="col-2 fw-bold">
+        <div class="col-2 fw-bold fs-5">
           Nombre
         </div>
-        <div class="col-2 fw-bold">
+        <div class="col-2 fw-bold fs-5">
           Curso
         </div>
-        <div class="col-2 fw-bold">
+        <div class="col-2 fw-bold fs-5">
           Anotacion
         </div>
-        <div class="col-2 fw-bold">
+        <div class="col-2 fw-bold fs-5">
           Fecha
         </div>
-        <div class="col-3 fw-bold">
+        <div class="col-3 fw-bold fs-5">
           Acciones
         </div>
       </div>
@@ -123,7 +122,7 @@ const listarCargarDatos = async () => {
           <div class="row">
             <div class="col d-flex text-center">
               <div class="col-2">
-                ${anotacionAlumno.nombre_alumno}sdfds
+                ${anotacionAlumno.nombre_alumno}
               </div>
               <div class="col-2">
               ${anotacionAlumno.curso_alumno}
@@ -146,6 +145,7 @@ const listarCargarDatos = async () => {
         `
         listaAnotacionAlumnoEncontrado.innerHTML = alumnoEncontrado.map(anotacionAlumno => dibujarDatosEncontrado(anotacionAlumno)).join('')
         listaAnotacionAlumnoEncontrado.style.display = 'block'
+        txtBuscadorPorNombre.value = ""
 
         let btnListarTodos = document.getElementById('btnListarTodos')
         btnListarTodos.onclick = async function listarTodos() {
@@ -172,8 +172,8 @@ const listarCargarDatos = async () => {
 
     const updateNodoAlumno = document.querySelector(`[data-update-id="${alumno.id}"]`)
     updateNodoAlumno.onclick = async e => {
-      //document.getElementById('btnCrearAlumno').style.display = 'none'
-      //document.getElementById('btnActualizarAlumno').style.display = ''
+      document.getElementById('btnCrearAlumno').style.display = 'none'
+      document.getElementById('btnActualizarAlumno').style.display = ''
 
       console.log('ID ALUMNO A ACTUALIZAR: ' + alumno.id + ' NOMBRE: ' + alumno.nombre_alumno)
 
@@ -199,9 +199,9 @@ const listarCargarDatos = async () => {
         formularioAnotacionAlumno.reset()
       }*/
 
-      /*let btnActualizarAlumno = document.getElementById('btnActualizarAlumno')
+      let btnActualizarAlumno = document.getElementById('btnActualizarAlumno')
 
-      btnActualizarAlumno.onclick = function actualizarAlumno() {
+      btnActualizarAlumno.onclick = async function actualizarAlumno() {
 
         let alumno = {
           nombre_alumno: txtNombre.value,
@@ -212,15 +212,16 @@ const listarCargarDatos = async () => {
 
         console.log(alumno)
 
-        fetch(`/api/alumnos/actualizar/${alumno.id}`, {
+        /*await fetch(`/api/alumnos/actualizar/${alumno.id}`, {
           method: 'PUT',
           body: JSON.stringify(alumno),
           headers: {
             'Content-Type': 'application/json'
           }
-        })
-
-      }*/
+        })*/
+        formularioAnotacionAlumno.reset()
+        
+      }
 
 
     }
@@ -230,8 +231,8 @@ const listarCargarDatos = async () => {
 
 const agregarAlumno = () => {
   const formularioAnotacionAlumno = document.getElementById('formulario-anotaciones')
-  //document.getElementById('btnActualizarAlumno').style.display = 'none'
-  //document.getElementById('btnCrearAlumno').style.display = ''
+  document.getElementById('btnActualizarAlumno').style.display = 'none'
+  document.getElementById('btnCrearAlumno').style.display = ''
   const txtNombre = document.getElementById('nombre')
   const txtAnotacion = document.getElementById('anotacion')
   const txtCurso = document.getElementById('curso')
@@ -274,6 +275,5 @@ const agregarAlumno = () => {
 window.onload = () => {
   cargarElementosPlantilla()
   listarCargarDatos()
-  //listarPorNombre()
   agregarAlumno()
 }
