@@ -18,7 +18,7 @@ exports.create = function (req, res) {
   } else {
     Alumno.create(nuevo_alumno, function (err, alumno) {
       if (err)
-        res.send(err);
+        res.send(err)
       res.json({ error: false, message: "Alumno agregado correctamente!", data: alumno })
     })
   }
@@ -34,12 +34,13 @@ exports.findByNombre = function (req, res) {
 }
 
 exports.update = function (req, res) {
+  //const {id} = req.params.id
   if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
     res.status(400).send({ error: true, message: 'Error al actualizar.' })
   } else {
     Alumno.update(req.params.id, new Alumno(req.body), function (err, alumno) {
       if (err)
-        res.send(err);
+        res.send(err)
       res.json({ error: false, message: 'Actualizado correctamente!' })
     })
   }

@@ -7,22 +7,10 @@ var Alumno = function (alumno) {
   this.curso_alumno = alumno.curso_alumno
   this.fecha_anotacion = alumno.fecha_anotacion
 }
-//Crear
-Alumno.create = function (nuevoAlumno, resultado) {
-  conexionBD.query("INSERT INTO alumnos SET ?", nuevoAlumno, function (error, respuesta) {
-    if (error) {
-      console.log("Error: ", error)
-      resultado(error, null)
-    }
-    else {
-      console.log(respuesta.insertId)
-      resultado(null, respuesta.insertId)
-    }
-  })
-}
+
 //Buscar por parametro
 Alumno.findByNombre = function (nombre_alumno, resultado) {
-  console.log(nombre_alumno)
+  console.log('Alumno encontrado: '+nombre_alumno)
   conexionBD.query("SELECT * FROM alumnos WHERE nombre_alumno = ? ", nombre_alumno, function (error, respuesta) {
     if (error) {
       console.log("Error: ", error)
@@ -46,9 +34,23 @@ Alumno.findAll = function (resultado) {
     }
   })
 }
+//Crear
+Alumno.create = function (nuevoAlumno, resultado) {
+  conexionBD.query("INSERT INTO alumnos SET ?", nuevoAlumno, function (error, respuesta) {
+    if (error) {
+      console.log("Error: ", error)
+      resultado(error, null)
+    }
+    else {
+      console.log(respuesta.insertId)
+      resultado(null, respuesta.insertId)
+    }
+  })
+}
 //Actualizar
 Alumno.update = function (id, alumno, resultado) {
   console.log(id)
+  console.log(alumno.nombre_alumno+' / '+alumno.anotacion_alumno)
   conexionBD.query("UPDATE alumnos SET nombre_alumno=?, anotacion_alumno=?, curso_alumno=?, fecha_anotacion=?  WHERE id = ?", [alumno.nombre_alumno, alumno.anotacion_alumno, alumno.curso_alumno, alumno.fecha_anotacion, id], function (error, respuesta) {
     if (error) {
       console.log("Error: ", error)

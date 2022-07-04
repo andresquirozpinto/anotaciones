@@ -95,10 +95,10 @@ const listarCargarDatos = async () => {
   const listaAnotacionAlumno = document.getElementById('lista-anotaciones')
   listaAnotacionAlumno.innerHTML = anotacionesAlumnos.map(anotacionAlumno => dibujarDatosListado(anotacionAlumno)).join('')
   console.log(anotacionesAlumnos)
-  const test = anotacionesAlumnos.map(function (i) {
+  /*const test = anotacionesAlumnos.map(function (i) {
     return i.nombre_alumno
   })
-  console.log(test)
+  console.log(test)*/
 
   const listaAnotacionAlumnoEncontrado = document.getElementById('alumno-encontrado')
   listaAnotacionAlumnoEncontrado.style.display = 'none'
@@ -172,6 +172,8 @@ const listarCargarDatos = async () => {
 
     const updateNodoAlumno = document.querySelector(`[data-update-id="${alumno.id}"]`)
     updateNodoAlumno.onclick = async e => {
+      let idAlumnoSeleccionado = alumno.id
+      console.log('IDSELECCIONADO: '+idAlumnoSeleccionado)
       document.getElementById('btnCrearAlumno').style.display = 'none'
       document.getElementById('btnActualizarAlumno').style.display = ''
 
@@ -195,30 +197,30 @@ const listarCargarDatos = async () => {
         //obtener datos de formulario sin los ID de cada etiqueta HTML
         const alumno = Object.fromEntries(formularioData.entries())
         console.log(alumno)
-
+        
         formularioAnotacionAlumno.reset()
       }*/
 
       let btnActualizarAlumno = document.getElementById('btnActualizarAlumno')
 
-      btnActualizarAlumno.onclick = async function actualizarAlumno() {
+      btnActualizarAlumno.onclick = function actualizarAlumno() {
 
         let alumno = {
           nombre_alumno: txtNombre.value,
-          anotacion_alumno: txtAnotacion.value,
           curso_alumno: txtCurso.value,
+          anotacion_alumno: txtAnotacion.value,
           fecha_anotacion: txtFecha.value
         }
-
+        console.log('IDSELECCIONADOCARGADO: '+idAlumnoSeleccionado)
         console.log(alumno)
 
-        /*await fetch(`/api/alumnos/actualizar/${alumno.id}`, {
+        fetch(`/api/alumnos/actualizar/${idAlumnoSeleccionado}`, {
           method: 'PUT',
           body: JSON.stringify(alumno),
           headers: {
             'Content-Type': 'application/json'
           }
-        })*/
+        })
         formularioAnotacionAlumno.reset()
         
       }
