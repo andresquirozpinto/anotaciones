@@ -6,7 +6,7 @@ router.get('/listar', alumnosController.findAll)
 
 router.post('/crear', alumnosController.create)
 
-router.get('/listaruno/:id', alumnosController.findById)
+router.get('/listarPorNombre/:nombre_alumno', alumnosController.findByNombre)
 
 router.put('/actualizar/:id', alumnosController.update)
 

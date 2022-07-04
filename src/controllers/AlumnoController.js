@@ -24,9 +24,9 @@ exports.create = function (req, res) {
   }
 }
 
-exports.findById = function (req, res) {
+exports.findByNombre = function (req, res) {
   console.log(req)
-  Alumno.findById(req.params.id, function (err, alumno) {
+  Alumno.findByNombre(req.params.nombre_alumno, function (err, alumno) {
     if (err)
       res.send(err)
     res.json(alumno)

@@ -18,6 +18,7 @@ const cargarElementosPlantilla = () => {
       <label for="texto" class="form-label">Fecha</label>
       <input type="text" class="form-control" id="fecha" placeholder="Fecha del día">
   </div>
+  <button class="btn btn-primary" type="submit">Enviar</button>
   </form>
   `
   //crear html de listado, etiqueta ul
@@ -42,6 +43,9 @@ const cargarElementosPlantilla = () => {
       </div>
     </div>
     <ul id="lista-anotaciones" class="list-group">
+      
+    </ul>
+    <ul id="alumno-encontrado" class="list-group">
       
     </ul>
   `
@@ -91,9 +95,68 @@ const listarCargarDatos = async () => {
 
   const listaAnotacionAlumno = document.getElementById('lista-anotaciones')
   listaAnotacionAlumno.innerHTML = anotacionesAlumnos.map(anotacionAlumno => dibujarDatosListado(anotacionAlumno)).join('')
+  console.log(anotacionesAlumnos)
+  const test = anotacionesAlumnos.map(function (i) {
+    return i.nombre_alumno
+  })
+  console.log(test)
 
-  /*FUNCIONES ELIMINAR Y EDITAR*/
+  const listaAnotacionAlumnoEncontrado = document.getElementById('alumno-encontrado')
+  listaAnotacionAlumnoEncontrado.style.display = 'none'
+
   anotacionesAlumnos.forEach(alumno => {
+    let btnBuscadorPorNombre = document.getElementById('btnBuscador')
+    let txtBuscadorPorNombre = document.getElementById('inputBuscador')
+
+    btnBuscadorPorNombre.onclick = async function buscarPorNombre() {
+      if (txtBuscadorPorNombre.value == "") {
+        alert('Debe escribir un nombre antes de buscar')
+      }else {
+        const respuesta = await fetch('/api/alumnos/listarPorNombre/' + txtBuscadorPorNombre.value)
+        const alumnoEncontrado = await respuesta.json()
+        console.log(alumnoEncontrado)
+
+        listaAnotacionAlumno.style.display = 'none'
+
+        const dibujarDatosEncontrado = anotacionAlumno => `
+        <li class="list-group-item border border-4">
+          <div class="row">
+            <div class="col d-flex text-center">
+              <div class="col-2">
+                ${anotacionAlumno.nombre_alumno}sdfds
+              </div>
+              <div class="col-2">
+              ${anotacionAlumno.curso_alumno}
+              </div>
+              <div class="col-2">
+              ${anotacionAlumno.anotacion_alumno}
+              </div>
+              <div class="col-2">
+              ${anotacionAlumno.fecha_anotacion}
+              </div>
+              <div class="col-1">
+                <button class="btn btn-success" style="margin-left: 40px;" data-bs-toggle="modal" data-bs-target="#mimodal" data-update-id="${anotacionAlumno.id}">Editar</button>
+              </div>
+              <div class="col-1" style="margin-left: 60px;">
+                <button class="btn btn-danger" data-delete-id="${anotacionAlumno.id}">Eliminar</button>
+              </div>
+            </div>
+          </div>
+        </li>
+        `
+        listaAnotacionAlumnoEncontrado.innerHTML = alumnoEncontrado.map(anotacionAlumno => dibujarDatosEncontrado(anotacionAlumno)).join('')
+        listaAnotacionAlumnoEncontrado.style.display = 'block'
+
+        let btnListarTodos = document.getElementById('btnListarTodos')
+        btnListarTodos.onclick = async function listarTodos() {
+          listaAnotacionAlumnoEncontrado.style.display = 'none'
+          listaAnotacionAlumno.style.display = 'block'
+        }
+      }
+
+    }
+
+
     //cada fila del listado
     const deleteNodoAlumno = document.querySelector(`[data-delete-id="${alumno.id}"]`)
     deleteNodoAlumno.onclick = async e => {
@@ -109,41 +172,56 @@ const listarCargarDatos = async () => {
 
     const updateNodoAlumno = document.querySelector(`[data-update-id="${alumno.id}"]`)
     updateNodoAlumno.onclick = async e => {
-      document.getElementById('btnCrearAlumno').style.display = 'none'
-      document.getElementById('btnActualizarAlumno').style.display = ''
+      //document.getElementById('btnCrearAlumno').style.display = 'none'
+      //document.getElementById('btnActualizarAlumno').style.display = ''
 
-      console.log('ID ALUMNO A ACTUALIZAR: '+alumno.id+' NOMBRE: '+alumno.nombre_alumno)
+      console.log('ID ALUMNO A ACTUALIZAR: ' + alumno.id + ' NOMBRE: ' + alumno.nombre_alumno)
+
       const txtNombre = document.getElementById('nombre')
       const txtAnotacion = document.getElementById('anotacion')
       const txtCurso = document.getElementById('curso')
       const txtFecha = document.getElementById('fecha')
-
+      //cargar datos en el formulario dado el ID
       txtNombre.value = alumno.nombre_alumno
       txtCurso.value = alumno.curso_alumno
       txtAnotacion.value = alumno.anotacion_alumno
       txtFecha.value = alumno.fecha_anotacion
 
-      let data = {
-        nombre_alumno: txtNombre.value,
-        curso_alumno: txtCurso.value,
-        anotacion_alumno: txtAnotacion.value,
-        fecha_anotacion: txtFecha.value
-      }
+      const formularioAnotacionAlumno = document.getElementById('formulario-anotaciones')
 
-      let btnActualizarAlumno = document.getElementById('btnActualizarAlumno')
+      /*formularioAnotacionAlumno.onsubmit = async (e) => {
+        e.preventDefault()
+        const formularioData = new FormData(formularioAnotacionAlumno)
+        //obtener datos de formulario sin los ID de cada etiqueta HTML
+        const alumno = Object.fromEntries(formularioData.entries())
+        console.log(alumno)
+
+        formularioAnotacionAlumno.reset()
+      }*/
+
+      /*let btnActualizarAlumno = document.getElementById('btnActualizarAlumno')
 
       btnActualizarAlumno.onclick = function actualizarAlumno() {
-        console.log(data)
+
+        let alumno = {
+          nombre_alumno: txtNombre.value,
+          anotacion_alumno: txtAnotacion.value,
+          curso_alumno: txtCurso.value,
+          fecha_anotacion: txtFecha.value
+        }
+
+        console.log(alumno)
 
         fetch(`/api/alumnos/actualizar/${alumno.id}`, {
           method: 'PUT',
-          body: JSON.stringify(data),
+          body: JSON.stringify(alumno),
           headers: {
             'Content-Type': 'application/json'
           }
         })
 
-      }
+      }*/
+
 
     }
 
@@ -151,8 +229,8 @@ const listarCargarDatos = async () => {
 }
 
 const agregarAlumno = () => {
-  //const formularioAnotacionAlumno = document.getElementById('formulario-anotaciones')
-  document.getElementById('btnActualizarAlumno').style.display = 'none'
+  const formularioAnotacionAlumno = document.getElementById('formulario-anotaciones')
+  //document.getElementById('btnActualizarAlumno').style.display = 'none'
   //document.getElementById('btnCrearAlumno').style.display = ''
   const txtNombre = document.getElementById('nombre')
   const txtAnotacion = document.getElementById('anotacion')
@@ -182,10 +260,11 @@ const agregarAlumno = () => {
     }
 
     //limpiando formulario despues de agregar
-    txtNombre.value = ""
+    /*txtNombre.value = ""
     txtAnotacion.value = ""
     txtCurso.value = ""
-    txtFecha.value = ""
+    txtFecha.value = ""*/
+    formularioAnotacionAlumno.reset()
     //volvemos a cargar listado para que aparezca el recien creado
     listarCargarDatos()
   }
@@ -195,5 +274,6 @@ const agregarAlumno = () => {
 window.onload = () => {
   cargarElementosPlantilla()
   listarCargarDatos()
+  //listarPorNombre()
   agregarAlumno()
 }

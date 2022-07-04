@@ -21,9 +21,9 @@ Alumno.create = function (nuevoAlumno, resultado) {
   })
 }
 //Buscar por parametro
-Alumno.findById = function (id, resultado) {
-  console.log(id)
-  conexionBD.query("SELECT * FROM alumnos WHERE id = ? ", id, function (error, respuesta) {
+Alumno.findByNombre = function (nombre_alumno, resultado) {
+  console.log(nombre_alumno)
+  conexionBD.query("SELECT * FROM alumnos WHERE nombre_alumno = ? ", nombre_alumno, function (error, respuesta) {
     if (error) {
       console.log("Error: ", error)
       resultado(error, null)
