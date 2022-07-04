@@ -16,7 +16,7 @@ const cargarElementosPlantilla = () => {
   </div>
   <div class="mb-3">
       <label for="texto" class="form-label">Fecha</label>
-      <input type="text" class="form-control" id="fecha" minlength="1" maxlength="10" placeholder="Fecha del día" required>
+      <input type="text" class="form-control" id="fecha" minlength="1" maxlength="10" placeholder="Ejemplo: 03/07/2022" required>
   </div>
   </form>
   `
